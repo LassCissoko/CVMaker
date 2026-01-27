@@ -11,9 +11,11 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
     <head>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <style>
-            body { background: white !important;
+            body { 
+                background: white !important;
             -webkit-print-color-adjust: exact !important;
-        print-color-adjust: exact !important; }
+        print-color-adjust: exact !important; 
+        }
         </style>
     </head>
     <body>
