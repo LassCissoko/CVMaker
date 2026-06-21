@@ -1,78 +1,153 @@
-// Récupérations des inputs Infos persos
-const infosContainer = document.querySelector('.infoContainer');
-const firstNameInput = document.querySelector('#firstNameInput');
-const lastNameInput = document.querySelector('#lastNameInput');
-const titleInput = document.querySelector('#titleProfessionalInput');
-const emailInput = document.querySelector('#emailInput');
-const numberInput = document.querySelector('#numberInput');
-const addressInput = document.querySelector('#addressInput');
-const linkedinInput = document.querySelector('#linkedinInput');
-const avatarInput = document.querySelector('#avatarInput');
-const resumeInput = document.querySelector('#resumeInput');
+// DOM - Formulaire
 
-// Experience Pro
-const expContainer = document.querySelector('.expContainer');
-const expContainerCV = document.querySelector('.expContainerCV');;
-const btnAddExp = document.querySelector('#addExp');
-const btnDeleteExp = document.querySelector('.deleteExp');
+const infosContainer    = document.querySelector('.infoContainer');
+const firstNameInput    = document.querySelector('#firstNameInput');
+const lastNameInput     = document.querySelector('#lastNameInput');
+const titleInput        = document.querySelector('#titleProfessionalInput');
+const emailInput        = document.querySelector('#emailInput');
+const numberInput       = document.querySelector('#numberInput');
+const addressInput      = document.querySelector('#addressInput');
+const linkedinInput     = document.querySelector('#linkedinInput');
+const avatarInput       = document.querySelector('#avatarInput');
+const resumeInput       = document.querySelector('#resumeInput');
 
-// Diplômes
-const diplomeContainer = document.querySelector('.diplomeContainer');
+const expContainer      = document.querySelector('.expContainer');
+const diplomeContainer  = document.querySelector('.diplomeContainer');
+const skillContainer    = document.querySelector('.skillContainer');
+const interetContainer  = document.querySelector('.interetContainer');
+const langueContainer   = document.querySelector('.langueContainer');
+
+// DOM — Prévisualisation
+
+const cvPreview         = document.querySelector('#cvPreview');
+const firstNameCV       = document.querySelector('#firstNameCV');
+const lastNameCV        = document.querySelector('#lastNameCV');
+const titleCV           = document.querySelector('#titleCV');
+const resumeCV          = document.querySelector('#resumeCV');
+const avatarCV          = document.querySelector('#avatarCV');
+
+const emailWrapper      = document.querySelector('#emailWrapper');
+const numberWrapper     = document.querySelector('#numberWrapper');
+const addressWrapper    = document.querySelector('#addressWrapper');
+const linkedinWrapper   = document.querySelector('#linkedinWrapper');
+const emailCV           = document.querySelector('#emailCV');
+const numberCV          = document.querySelector('#numberCV');
+const addressCV         = document.querySelector('#addressCV');
+const linkedinCV        = document.querySelector('#linkedinCV');
+
+const expContainerCV    = document.querySelector('.expContainerCV');
 const diplomeContainerCV = document.querySelector('.diplomeContainerCV');
-const btnAddDiplome = document.querySelector('.addDiplome');
+const skillContainerCV  = document.querySelector('.skillContainerCV');
+const interetContainerCV = document.querySelector('.interetContainerCV');
+const langueContainerCV  = document.querySelector('.langueContainerCV');
 
-// compétences
-const skillContainer = document.querySelector('.skillContainer');
-const skillContainerCV = document.querySelector('.skillContainerCV');
-const btnAddSkill = document.querySelector('.addSkill');
+//  Gestion du thème
 
-// Télécharger CV
-const btnDownload = document.querySelector('#convertToPDF');
+let currentTheme = 'default';
 
-// Récupération balises CV
+document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        switchTheme(btn.dataset.theme);
+    });
+});
 
-// Infos Perso
-const firstNameCV = document.querySelector('#firstNameCV');
-const lastNameCV = document.querySelector('#lastNameCV');
-const titleCV = document.querySelector('#titleCV');
-const emailCV = document.querySelector('#emailCV');
-const numberCV = document.querySelector('#numberCV');
-const addressCV = document.querySelector('#addressCV');
-const linkedinCV = document.querySelector('#linkedinCV');
-const avatarCV  = document.querySelector('#avatarCV');
-const resumeCV = document.querySelector('#resumeCV');
+function switchTheme(theme) {
+    cvPreview.classList.remove('theme-default', 'theme-modern', 'theme-simple');
+    cvPreview.classList.add('theme-' + theme);
+    currentTheme = theme;
+}
 
-// Compétences
-const skillCV = document.querySelector('.skillCV');
-const levelCV = document.querySelector('.levelCV');
+//   Formulaire → Prévisualisation
 
-// Ajout de la fonction dynamique des infos à renseigner
 infosContainer.addEventListener('input', infoPersoPreview);
 resumeInput.addEventListener('input', resumePreview);
 expContainer.addEventListener('input', updateAllExp);
 diplomeContainer.addEventListener('input', updateAllDiplome);
-skillContainer.addEventListener('input', updateAllSkill)
+skillContainer.addEventListener('input', updateAllSkill);
+interetContainer.addEventListener('input', updateAllInteret);
+langueContainer.addEventListener('input', updateAllLangue);
 
-// Ajout de la fonction ajout des blocs
-btnAddExp.addEventListener('click', addExp);
-btnAddDiplome.addEventListener('click', addDiplome);
-btnAddSkill.addEventListener('click', addSkill);
+document.querySelector('#addExp').addEventListener('click', addExp);
+document.querySelector('.addDiplome').addEventListener('click', addDiplome);
+document.querySelector('.addSkill').addEventListener('click', addSkill);
+document.querySelector('.addInteret').addEventListener('click', addInteret);
+document.querySelector('.addLangue').addEventListener('click', addLangue);
 
+document.querySelector('#convertToPDF').addEventListener('click', exportPDF);
+document.querySelector('#saveCV').addEventListener('click', saveCV);
+
+// Info personnelles
+
+function infoPersoPreview() {
+    firstNameCV.textContent = firstNameInput.value || 'Prénom';
+    lastNameCV.textContent  = lastNameInput.value  || 'Nom';
+    titleCV.textContent     = titleInput.value     || 'Titre professionnel';
+
+    // Email : afficher l'icône + texte seulement si renseigné
+    if (emailInput.value.trim()) {
+        emailCV.textContent = emailInput.value.trim();
+        emailWrapper.classList.remove('d-none');
+    } else {
+        emailWrapper.classList.add('d-none');
+    }
+
+    // Téléphone
+    if (numberInput.value.trim()) {
+        numberCV.textContent = numberInput.value.trim();
+        numberWrapper.classList.remove('d-none');
+    } else {
+        numberWrapper.classList.add('d-none');
+    }
+
+    // Adresse
+    if (addressInput.value.trim()) {
+        addressCV.textContent = addressInput.value.trim();
+        addressWrapper.classList.remove('d-none');
+    } else {
+        addressWrapper.classList.add('d-none');
+    }
+
+    // LinkedIn
+    if (linkedinInput.value.trim()) {
+        linkedinCV.textContent = linkedinInput.value.trim();
+        linkedinWrapper.classList.remove('d-none');
+    } else {
+        linkedinWrapper.classList.add('d-none');
+    }
+}
 
 function resumePreview() {
-    resumeCV.textContent = resumeInput.value || 'Votre résumé professionnel'
-};
+    resumeCV.textContent = resumeInput.value || 'Votre résumé professionnel';
+}
 
-// Créations des fonctions ajouts des blocs
+//  AVATAR
+
+avatarInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            avatarCV.src = e.target.result;
+            avatarCV.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+//  Fonction d'ajout d'éxpériences
+
 function addExp() {
     const divExp = document.createElement('div');
     divExp.classList.add('newExpContainer');
-    divExp.innerHTML = `<div class="border border-success p-3 rounded mt-3">
+    divExp.innerHTML = `
+    <div class="border border-success p-3 rounded mt-3">
         <div class="row g-3">
             <div class="col-12">
-                <div class="d-flex justify-content-between mb-2">
-                    <label class="form-label">Titre du poste</label>
-                    <i class="bi bi-trash text-danger deleteExp" style="cursor:pointer"></i>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label mb-0">Titre du poste</label>
+                    <i class="bi bi-trash text-danger deleteExp" style="cursor:pointer;"></i>
                 </div>
                 <input type="text" class="form-control titlePostInput">
             </div>
@@ -89,58 +164,74 @@ function addExp() {
                 <input type="date" class="form-control startDateExp">
             </div>
             <div class="col-md-6">
-                <label class="form-label">Date de fin</label>
+                <label class="form-label">Date de fin <span class="text-muted">(facultatif)</span></label>
                 <input type="date" class="form-control endDateExp">
             </div>
-            <div class="col-12 mt-3">
-                <textarea class="form-control descripExpInput" rows="2" placeholder="Description de vos missions"></textarea>
+            <div class="col-12">
+                <label class="form-label">Description des missions</label>
+                <textarea class="form-control descripExpInput" rows="2" placeholder="Décrivez vos missions…"></textarea>
             </div>
         </div>
     </div>`;
     expContainer.appendChild(divExp);
 
-        const divExpCV = document.createElement('div');
-        divExpCV.classList.add('newExpContainerCV')
-        divExpCV.innerHTML = `<hr>
-            <div>
-                <div class="post-date-resume d-flex justify-content-between">
-                    <h5 class="titlePostCV">Titre du poste </h5>
-                        <div class="rounded-pill p-2 bg-secondary text-white ">
-                        <strong class="startDateExpCV">Date de début</strong> - <strong class="endDateExpCV">Date de fin</strong></div>
-                </div>
-                <div class="d-flex gap-3">
-                    <h6 class="companyCV">Entreprise </h6>
-                    <h6 class="localExpCV">Lieu</h6>
-                </div>
-                <p class="descripExpCV">Description de votre experience professionnel</p>
-                </div>`;
-                expContainerCV.appendChild(divExpCV);
+    const divExpCV = document.createElement('div');
+    divExpCV.classList.add('newExpContainerCV', 'cv-entry');
+    divExpCV.innerHTML = `
+    <div class="cv-entry-row">
+        <strong class="titlePostCV">Titre du poste</strong>
+        <span class="cv-date-badge">
+            <span class="startDateExpCV">Date de début</span> – <span class="endDateExpCV">Date de fin</span>
+        </span>
+    </div>
+    <div class="cv-entry-sub">
+        <span class="companyCV">Entreprise</span>
+        <span class="cv-sub-sep">–</span>
+        <span class="localExpCV">Lieu</span>
+    </div>
+    <p class="descripExpCV cv-text">Description de votre expérience professionnelle</p>`;
+    expContainerCV.appendChild(divExpCV);
 
-    function deleteExp() {
+    divExp.querySelector('.deleteExp').addEventListener('click', () => {
         divExp.remove();
-        divExpCV.remove()
-        updateAllExp()
-    };
+        divExpCV.remove();
+        updateAllExp();
+    });
+}
 
-    const currentDeleteBtn = divExp.querySelector('.deleteExp')
-    currentDeleteBtn.addEventListener('click', deleteExp);
-};
+function updateAllExp() {
+    const allExp   = expContainer.querySelectorAll('.newExpContainer');
+    const allExpCV = expContainerCV.querySelectorAll('.newExpContainerCV');
+
+    allExp.forEach((block, i) => {
+        const cv = allExpCV[i];
+        if (!cv) return;
+        cv.querySelector('.titlePostCV').textContent    = block.querySelector('.titlePostInput').value    || 'Titre du poste';
+        cv.querySelector('.companyCV').textContent      = block.querySelector('.companyInput').value      || 'Entreprise';
+        cv.querySelector('.localExpCV').textContent     = block.querySelector('.localExpInput').value     || 'Lieu';
+        cv.querySelector('.startDateExpCV').textContent = block.querySelector('.startDateExp').value      || 'Date de début';
+        cv.querySelector('.endDateExpCV').textContent   = block.querySelector('.endDateExp').value        || 'Date de fin';
+        cv.querySelector('.descripExpCV').textContent   = block.querySelector('.descripExpInput').value   || 'Description de votre expérience professionnelle';
+    });
+}
+
+//  Fonction d'ajout de diplôme
 
 function addDiplome() {
-    const DivDiplome = document.createElement('div');
-    DivDiplome.classList.add('newDiplomeContainer');
-    DivDiplome.innerHTML = `
+    const divDiplome = document.createElement('div');
+    divDiplome.classList.add('newDiplomeContainer');
+    divDiplome.innerHTML = `
     <div class="border border-success p-3 rounded mt-3">
-        <form class="row g-3 ">
+        <div class="row g-3">
             <div class="col-12">
-                <div class="d-flex justify-content-between mb-2">
-                    <label class="form-label">Diplôme</label>
-                    <i class="bi bi-trash text-danger deleteDiplome" style="cursor:pointer"></i>
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label mb-0">Diplôme / Formation</label>
+                    <i class="bi bi-trash text-danger deleteDiplome" style="cursor:pointer;"></i>
                 </div>
                 <input type="text" class="form-control diplomeFormInput">
             </div>
             <div class="col-md-6">
-                <label class="form-label">Etablissement</label>
+                <label class="form-label">Établissement</label>
                 <input type="text" class="form-control etabFormInput">
             </div>
             <div class="col-md-6">
@@ -152,168 +243,557 @@ function addDiplome() {
                 <input type="date" class="form-control startDateFormInput">
             </div>
             <div class="col-md-6">
-                <label class="form-label">Date de fin</label>
+                <label class="form-label">Date de fin <span class="text-muted">(facultatif)</span></label>
                 <input type="date" class="form-control endDateFormInput">
             </div>
-            <div class="col-12 mt-3">
-                <textarea class="form-control descripFormInput" rows="2" placeholder="Description de vos missions"></textarea>
+            <div class="col-12">
+                <label class="form-label">Description</label>
+                <textarea class="form-control descripFormInput" rows="2" placeholder="Description de la formation…"></textarea>
             </div>
-        </form>
+        </div>
     </div>`;
+    diplomeContainer.appendChild(divDiplome);
 
-    diplomeContainer.appendChild(DivDiplome);
+    const divDiplomeCV = document.createElement('div');
+    divDiplomeCV.classList.add('newDiplomeContainerCV', 'cv-entry');
+    divDiplomeCV.innerHTML = `
+    <div class="cv-entry-row">
+        <strong class="diplomeCV">Diplôme / Formation</strong>
+        <span class="cv-date-badge">
+            <span class="startDateFormCV">Date de début</span> – <span class="endDateFormCV">Date de fin</span>
+        </span>
+    </div>
+    <div class="cv-entry-sub">
+        <span class="etabFormCV">Établissement</span>
+        <span class="cv-sub-sep">–</span>
+        <span class="localFormCV">Lieu</span>
+    </div>
+    <p class="descripFormCV cv-text">Description de votre formation</p>`;
+    diplomeContainerCV.appendChild(divDiplomeCV);
 
-    const DivDiplomeCV = document.createElement('div');
-    DivDiplomeCV.classList.add('newDiplomeContainerCV');
-    DivDiplomeCV.innerHTML = `<hr>
-    <div>
-        <div class="post-date-formation d-flex justify-content-between">
-                                                <h5 class="diplomeCV">Diplôme obtenue</h5>
-                                                <div class="border rounded-pill p-2 bg-secondary text-white">
-                                            <strong class="startDateFormCV">Date de début</strong> - <strong class="endDateFormCV">Date de fin</strong></div>
-                                        </div>
-                                        <div class="d-flex gap-3">
-                                            <h6 class="etabFormCV">Etablissement</h6>
-                                            <h6 class="localFormCV">Lieu</h6>
-                                        </div>
-                                        <p class="descripFormCV">Description de votre formation</p>
-                                        </div>`
-    diplomeContainerCV.appendChild(DivDiplomeCV);
-
-    function deleteDiplome() {
-        DivDiplome.remove();
-        DivDiplomeCV.remove();
+    divDiplome.querySelector('.deleteDiplome').addEventListener('click', () => {
+        divDiplome.remove();
+        divDiplomeCV.remove();
         updateAllDiplome();
-    };
+    });
+}
 
-    const currentDeleteBtn = DivDiplome.querySelector('.deleteDiplome');
-    currentDeleteBtn.addEventListener('click',deleteDiplome);
-};
+function updateAllDiplome() {
+    const all   = diplomeContainer.querySelectorAll('.newDiplomeContainer');
+    const allCV = diplomeContainerCV.querySelectorAll('.newDiplomeContainerCV');
+
+    all.forEach((block, i) => {
+        const cv = allCV[i];
+        if (!cv) return;
+        cv.querySelector('.diplomeCV').textContent        = block.querySelector('.diplomeFormInput').value   || 'Diplôme / Formation';
+        cv.querySelector('.etabFormCV').textContent       = block.querySelector('.etabFormInput').value      || 'Établissement';
+        cv.querySelector('.localFormCV').textContent      = block.querySelector('.localFormInput').value     || 'Lieu';
+        cv.querySelector('.startDateFormCV').textContent  = block.querySelector('.startDateFormInput').value || 'Date de début';
+        cv.querySelector('.endDateFormCV').textContent    = block.querySelector('.endDateFormInput').value   || 'Date de fin';
+        cv.querySelector('.descripFormCV').textContent    = block.querySelector('.descripFormInput').value   || 'Description de votre formation';
+    });
+}
+
+//  Fonction d'ajout de compétence
 
 function addSkill() {
     const divSkill = document.createElement('div');
     divSkill.classList.add('newSkillContainer');
-    divSkill.innerHTML = `<div class="border border-success p-3 rounded mt-3">
-    <form class="row g-3">
-        <div class="col-md-6">
-            <label class="form-label">Compétence</label>
+    divSkill.innerHTML = `
+    <div class="border border-success p-3 rounded mt-3">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Compétence</label>
                 <input type="text" class="form-control skillInput">
             </div>
-            <div class="col-md-6 ">
-                <label class="form-label">Niveau</label>
-                <div class="d-flex">
-                    <input type="text" class="form-control levelInput">
-                    <i class="bi bi-trash text-danger ps-5 deleteSkill" style="cursor:pointer"></i>
+            <div class="col-md-6">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label mb-0">Niveau</label>
+                    <i class="bi bi-trash text-danger deleteSkill" style="cursor:pointer;"></i>
                 </div>
+                <input type="text" class="form-control levelInput" placeholder="ex: Expert">
             </div>
-        </form>
+        </div>
     </div>`;
     skillContainer.appendChild(divSkill);
 
     const divSkillCV = document.createElement('div');
     divSkillCV.classList.add('newSkillContainerCV');
     divSkillCV.innerHTML = `
-    <div class="d-inline-flex bg-secondary text-white border rounded-pill p-2 gap-5 justify-content-between">
-        <strong class="skillCV">Compétences</strong>
+    <span class="cv-skill-pill">
+        <strong class="skillCV">Compétence</strong>
+        <span class="cv-pill-sep">|</span>
         <span class="levelCV">Niveau</span>
-    </div>`;
+    </span>`;
     skillContainerCV.appendChild(divSkillCV);
 
-    function deleteSkill() {
+    divSkill.querySelector('.deleteSkill').addEventListener('click', () => {
         divSkill.remove();
         divSkillCV.remove();
-        updateAllSkill()
-    };
-
-    const currentDeleteBtn = divSkill.querySelector('.deleteSkill');
-    currentDeleteBtn.addEventListener('click', deleteSkill)
-};
-
-
-// Créations des fonctions pour afficher en temps réel
-function infoPersoPreview() {
-    firstNameCV.textContent = firstNameInput.value || 'Prénom';
-    lastNameCV.textContent = lastNameInput.value || 'Nom';
-    titleCV.textContent = titleInput.value || 'Titre profesionnel';
-    emailCV.textContent = emailInput.value || 'mail';
-    numberCV.textContent = numberInput.value || 'téléphone';
-    addressCV.textContent = addressInput.value || 'Adresse';
-    linkedinCV.textContent = linkedinInput.value || 'Linkedin';
-};
-
-
-function updateAllExp() {
-    const allExpContainer = expContainer.querySelectorAll('.newExpContainer');
-    const allExpCV = expContainerCV.querySelectorAll('.newExpContainerCV');
-
-    allExpContainer.forEach((input, index) => {
-        const CVBlock = allExpCV[index];
-
-        if (CVBlock) {
-            CVBlock.querySelector('.titlePostCV').textContent = input.querySelector('.titlePostInput').value || 'Titre du poste';
-            CVBlock.querySelector('.companyCV').textContent = input.querySelector('.companyInput').value || 'Entreprise';
-            CVBlock.querySelector('.localExpCV').textContent = input.querySelector('.localExpInput').value || 'Lieu';
-            CVBlock.querySelector('.startDateExpCV').textContent = input.querySelector('.startDateExp').value || 'Date de début';
-            CVBlock.querySelector('.endDateExpCV').textContent = input.querySelector('.endDateExp').value || "Date de fin";
-            CVBlock.querySelector('.descripExpCV').textContent = input.querySelector('.descripExpInput').value || 'Description de votre experience profesionnelles';
-        };
+        updateAllSkill();
     });
-};
-
-
-function updateAllDiplome() {
-    const allDiplomeContainer = diplomeContainer.querySelectorAll('.newDiplomeContainer');
-    const allDiplomeCV = diplomeContainerCV.querySelectorAll('.newDiplomeContainerCV');
-
-    allDiplomeContainer.forEach((input, index) => {
-        const CVBlock = allDiplomeCV[index];
-
-        if (CVBlock) {
-            CVBlock.querySelector('.diplomeCV').textContent = input.querySelector('.diplomeFormInput').value || 'Diplome obtenue';
-            CVBlock.querySelector('.etabFormCV').textContent = input.querySelector('.etabFormInput').value || 'Etablissement';
-            CVBlock.querySelector('.localFormCV').textContent = input.querySelector('.localFormInput').value || 'Lieu';
-            CVBlock.querySelector('.startDateFormCV').textContent = input.querySelector('.startDateFormInput').value || 'Date de début';
-            CVBlock.querySelector('.endDateFormCV').textContent = input.querySelector('.endDateFormInput').value || 'Date de fin';
-            CVBlock.querySelector('.descripFormCV').textContent = input.querySelector('.descripFormInput').value || 'Description de votre formation';
-        };
-    });
-};
-
+}
 
 function updateAllSkill() {
-    const allSkillContainer = skillContainer.querySelectorAll('.newSkillContainer');
-    const allSkillContainerCV = skillContainerCV.querySelectorAll('.newSkillContainerCV');
+    const all   = skillContainer.querySelectorAll('.newSkillContainer');
+    const allCV = skillContainerCV.querySelectorAll('.newSkillContainerCV');
 
-    allSkillContainer.forEach((input, index) => {
-        const CVBlock = allSkillContainerCV[index];
+    all.forEach((block, i) => {
+        const cv = allCV[i];
+        if (!cv) return;
+        cv.querySelector('.skillCV').textContent  = block.querySelector('.skillInput').value  || 'Compétence';
+        cv.querySelector('.levelCV').textContent  = block.querySelector('.levelInput').value  || 'Niveau';
+    });
+}
 
-        if (CVBlock) {
-            CVBlock.querySelector('.skillCV').textContent = input.querySelector('.skillInput').value || 'Compétence';
-            CVBlock.querySelector('.levelCV').textContent = input.querySelector('.levelInput').value || 'Niveau';
-        };
-    })
-};
+//  Fonction d'ajout des centres d'intérèts
 
-// Fonction qui permet de séléctionner une image
+function addInteret() {
+    const divInteret = document.createElement('div');
+    divInteret.classList.add('newInteretContainer');
+    divInteret.innerHTML = `
+    <div class="border border-success p-3 rounded mt-3">
+        <div class="row g-3">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label mb-0">Centre d'intérêt</label>
+                    <i class="bi bi-trash text-danger deleteInteret" style="cursor:pointer;"></i>
+                </div>
+                <input type="text" class="form-control interetInput" placeholder="ex: Photographie">
+            </div>
+        </div>
+    </div>`;
+    interetContainer.appendChild(divInteret);
 
-avatarInput.addEventListener('change', function()  {
-    const file = this.files[0];
+    const divInteretCV = document.createElement('div');
+    divInteretCV.classList.add('newInteretContainerCV');
+    divInteretCV.innerHTML = `
+    <span class="cv-interet-pill">
+        <span class="interetCV">Centre d'intérêt</span>
+    </span>`;
+    interetContainerCV.appendChild(divInteretCV);
 
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            avatarCV.src = e.target.result;
-        };
+    divInteret.querySelector('.deleteInteret').addEventListener('click', () => {
+        divInteret.remove();
+        divInteretCV.remove();
+        updateAllInteret();
+    });
+}
 
-        reader.readAsDataURL(file)
-    }
-});
+function updateAllInteret() {
+    const all   = interetContainer.querySelectorAll('.newInteretContainer');
+    const allCV = interetContainerCV.querySelectorAll('.newInteretContainerCV');
 
+    all.forEach((block, i) => {
+        const cv = allCV[i];
+        if (!cv) return;
+        cv.querySelector('.interetCV').textContent = block.querySelector('.interetInput').value || "Centre d'intérêt";
+    });
+}
 
+//  Fonction des langues
 
-// Evénement qui permet au click de convertir notre en PDF
-btnDownload.addEventListener('click', () => {
-    const cvHTML = document.querySelector('article').innerHTML;
-    document.querySelector('#cv_content_input').value = cvHTML;
+function addLangue() {
+    const divLangue = document.createElement('div');
+    divLangue.classList.add('newLangueContainer');
+    divLangue.innerHTML = `
+    <div class="border border-success p-3 rounded mt-3">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label">Langue</label>
+                <input type="text" class="form-control langueInput" placeholder="ex: Français">
+            </div>
+            <div class="col-md-6">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <label class="form-label mb-0">Niveau</label>
+                    <i class="bi bi-trash text-danger deleteLangue" style="cursor:pointer;"></i>
+                </div>
+                <input type="text" class="form-control niveauLangueInput" placeholder="ex: Courant">
+            </div>
+        </div>
+    </div>`;
+    langueContainer.appendChild(divLangue);
+
+    const divLangueCV = document.createElement('div');
+    divLangueCV.classList.add('newLangueContainerCV');
+    divLangueCV.innerHTML = `
+    <span class="cv-skill-pill">
+        <strong class="langueCV">Langue</strong>
+        <span class="cv-pill-sep">|</span>
+        <span class="niveauLangueCV">Niveau</span>
+    </span>`;
+    langueContainerCV.appendChild(divLangueCV);
+
+    divLangue.querySelector('.deleteLangue').addEventListener('click', () => {
+        divLangue.remove();
+        divLangueCV.remove();
+        updateAllLangue();
+    });
+}
+
+function updateAllLangue() {
+    const all   = langueContainer.querySelectorAll('.newLangueContainer');
+    const allCV = langueContainerCV.querySelectorAll('.newLangueContainerCV');
+
+    all.forEach((block, i) => {
+        const cv = allCV[i];
+        if (!cv) return;
+        cv.querySelector('.langueCV').textContent      = block.querySelector('.langueInput').value      || 'Langue';
+        cv.querySelector('.niveauLangueCV').textContent = block.querySelector('.niveauLangueInput').value || 'Niveau';
+    });
+}
+
+//  Export PDF
+
+function exportPDF() {
+    document.querySelector('#cv_content_input').value = cvPreview.outerHTML;
+    document.querySelector('#cv_theme_input').value   = currentTheme;
     document.querySelector('#pdfForm').submit();
-})
+}
+
+//  Sauvegarde du CV
+
+function getCVData() {
+    const data = {
+        theme:     currentTheme,
+        firstName: firstNameInput.value,
+        lastName:  lastNameInput.value,
+        title:     titleInput.value,
+        email:     emailInput.value,
+        phone:     numberInput.value,
+        address:   addressInput.value,
+        linkedin:  linkedinInput.value,
+        resume:    resumeInput.value,
+        avatarSrc: avatarCV.style.display !== 'none' ? avatarCV.src : '',
+        experiences: [],
+        formations:  [],
+        skills:      [],
+        interets:    [],
+        langues:     []
+    };
+
+    expContainer.querySelectorAll('.newExpContainer').forEach(b => {
+        data.experiences.push({
+            title:       b.querySelector('.titlePostInput').value,
+            company:     b.querySelector('.companyInput').value,
+            location:    b.querySelector('.localExpInput').value,
+            startDate:   b.querySelector('.startDateExp').value,
+            endDate:     b.querySelector('.endDateExp').value,
+            description: b.querySelector('.descripExpInput').value
+        });
+    });
+
+    diplomeContainer.querySelectorAll('.newDiplomeContainer').forEach(b => {
+        data.formations.push({
+            diplome:     b.querySelector('.diplomeFormInput').value,
+            etablissement: b.querySelector('.etabFormInput').value,
+            location:    b.querySelector('.localFormInput').value,
+            startDate:   b.querySelector('.startDateFormInput').value,
+            endDate:     b.querySelector('.endDateFormInput').value,
+            description: b.querySelector('.descripFormInput').value
+        });
+    });
+
+    skillContainer.querySelectorAll('.newSkillContainer').forEach(b => {
+        data.skills.push({
+            skill: b.querySelector('.skillInput').value,
+            level: b.querySelector('.levelInput').value
+        });
+    });
+
+    interetContainer.querySelectorAll('.newInteretContainer').forEach(b => {
+        data.interets.push({ interet: b.querySelector('.interetInput').value });
+    });
+
+    langueContainer.querySelectorAll('.newLangueContainer').forEach(b => {
+        data.langues.push({
+            langue: b.querySelector('.langueInput').value,
+            niveau: b.querySelector('.niveauLangueInput').value
+        });
+    });
+
+    return data;
+}
+
+async function saveCV() {
+    const data = getCVData();
+    try {
+        const res = await fetch('cv_storage.php?action=save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+            showToast('CV sauvegardé avec succès !', 'success');
+            loadSavedCVsList();
+        } else {
+            showToast('Erreur lors de la sauvegarde.', 'danger');
+        }
+    } catch (e) {
+        showToast('Erreur réseau.', 'danger');
+    }
+}
+
+
+// Chargement d'un CV enregistré
+
+async function loadCV(id) {
+    try {
+        const res = await fetch(`cv_storage.php?action=get&id=${encodeURIComponent(id)}`);
+        const data = await res.json();
+        restoreCVData(data);
+        // Ferme l'offcanvas
+        bootstrap.Offcanvas.getInstance(document.getElementById('savedCvsOffcanvas'))?.hide();
+        showToast('CV chargé !', 'success');
+    } catch (e) {
+        showToast('Impossible de charger ce CV.', 'danger');
+    }
+}
+
+function restoreCVData(data) {
+    // Thème
+    const theme = data.theme || 'default';
+    document.querySelectorAll('.theme-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.theme === theme);
+    });
+    switchTheme(theme);
+
+    // Infos perso
+    firstNameInput.value = data.firstName || '';
+    lastNameInput.value  = data.lastName  || '';
+    titleInput.value     = data.title     || '';
+    emailInput.value     = data.email     || '';
+    numberInput.value    = data.phone     || '';
+    addressInput.value   = data.address   || '';
+    linkedinInput.value  = data.linkedin  || '';
+    resumeInput.value    = data.resume    || '';
+
+    // Avatar
+    if (data.avatarSrc) {
+        avatarCV.src = data.avatarSrc;
+        avatarCV.style.display = 'block';
+    } else {
+        avatarCV.src = '';
+        avatarCV.style.display = 'none';
+    }
+
+    // Expériences : supprimer les ajouts dynamiques, garder le 1er bloc
+    clearDynamicBlocks(expContainer, '.newExpContainer', 1);
+    clearDynamicBlocks(expContainerCV, '.newExpContainerCV', 1);
+
+    if (data.experiences && data.experiences.length > 0) {
+        fillExpBlock(expContainer.querySelector('.newExpContainer'), data.experiences[0]);
+        for (let i = 1; i < data.experiences.length; i++) {
+            addExp();
+            const blocks = expContainer.querySelectorAll('.newExpContainer');
+            fillExpBlock(blocks[blocks.length - 1], data.experiences[i]);
+        }
+    }
+
+    // Formations
+    clearDynamicBlocks(diplomeContainer, '.newDiplomeContainer', 1);
+    clearDynamicBlocks(diplomeContainerCV, '.newDiplomeContainerCV', 1);
+
+    if (data.formations && data.formations.length > 0) {
+        fillDiplomeBlock(diplomeContainer.querySelector('.newDiplomeContainer'), data.formations[0]);
+        for (let i = 1; i < data.formations.length; i++) {
+            addDiplome();
+            const blocks = diplomeContainer.querySelectorAll('.newDiplomeContainer');
+            fillDiplomeBlock(blocks[blocks.length - 1], data.formations[i]);
+        }
+    }
+
+    // Compétences
+    clearDynamicBlocks(skillContainer, '.newSkillContainer', 1);
+    clearDynamicBlocks(skillContainerCV, '.newSkillContainerCV', 1);
+
+    if (data.skills && data.skills.length > 0) {
+        fillSkillBlock(skillContainer.querySelector('.newSkillContainer'), data.skills[0]);
+        for (let i = 1; i < data.skills.length; i++) {
+            addSkill();
+            const blocks = skillContainer.querySelectorAll('.newSkillContainer');
+            fillSkillBlock(blocks[blocks.length - 1], data.skills[i]);
+        }
+    }
+
+    // Intérêts
+    clearDynamicBlocks(interetContainer, '.newInteretContainer', 1);
+    clearDynamicBlocks(interetContainerCV, '.newInteretContainerCV', 1);
+
+    if (data.interets && data.interets.length > 0) {
+        fillInteretBlock(interetContainer.querySelector('.newInteretContainer'), data.interets[0]);
+        for (let i = 1; i < data.interets.length; i++) {
+            addInteret();
+            const blocks = interetContainer.querySelectorAll('.newInteretContainer');
+            fillInteretBlock(blocks[blocks.length - 1], data.interets[i]);
+        }
+    }
+
+    // Langues
+    clearDynamicBlocks(langueContainer, '.newLangueContainer', 1);
+    clearDynamicBlocks(langueContainerCV, '.newLangueContainerCV', 1);
+
+    if (data.langues && data.langues.length > 0) {
+        fillLangueBlock(langueContainer.querySelector('.newLangueContainer'), data.langues[0]);
+        for (let i = 1; i < data.langues.length; i++) {
+            addLangue();
+            const blocks = langueContainer.querySelectorAll('.newLangueContainer');
+            fillLangueBlock(blocks[blocks.length - 1], data.langues[i]);
+        }
+    }
+
+    // Rafraîchir la prévisualisation
+    infoPersoPreview();
+    resumePreview();
+    updateAllExp();
+    updateAllDiplome();
+    updateAllSkill();
+    updateAllInteret();
+    updateAllLangue();
+}
+
+function clearDynamicBlocks(container, selector, keepFirst) {
+    const blocks = container.querySelectorAll(selector);
+    blocks.forEach((b, i) => { if (i >= keepFirst) b.remove(); });
+}
+
+function fillExpBlock(block, d) {
+    if (!block || !d) return;
+    block.querySelector('.titlePostInput').value  = d.title       || '';
+    block.querySelector('.companyInput').value    = d.company     || '';
+    block.querySelector('.localExpInput').value   = d.location    || '';
+    block.querySelector('.startDateExp').value    = d.startDate   || '';
+    block.querySelector('.endDateExp').value      = d.endDate     || '';
+    block.querySelector('.descripExpInput').value = d.description || '';
+}
+
+function fillDiplomeBlock(block, d) {
+    if (!block || !d) return;
+    block.querySelector('.diplomeFormInput').value   = d.diplome       || '';
+    block.querySelector('.etabFormInput').value      = d.etablissement || '';
+    block.querySelector('.localFormInput').value     = d.location      || '';
+    block.querySelector('.startDateFormInput').value = d.startDate     || '';
+    block.querySelector('.endDateFormInput').value   = d.endDate       || '';
+    block.querySelector('.descripFormInput').value   = d.description   || '';
+}
+
+function fillSkillBlock(block, d) {
+    if (!block || !d) return;
+    block.querySelector('.skillInput').value = d.skill || '';
+    block.querySelector('.levelInput').value = d.level || '';
+}
+
+function fillInteretBlock(block, d) {
+    if (!block || !d) return;
+    block.querySelector('.interetInput').value = d.interet || '';
+}
+
+function fillLangueBlock(block, d) {
+    if (!block || !d) return;
+    block.querySelector('.langueInput').value       = d.langue || '';
+    block.querySelector('.niveauLangueInput').value = d.niveau || '';
+}
+
+//  LISTE DES CV SAUVEGARDÉS
+
+async function loadSavedCVsList() {
+    try {
+        const res  = await fetch('cv_storage.php?action=list');
+        const cvs  = await res.json();
+        renderSavedCVsList(cvs);
+    } catch (e) {
+        // fail silently
+    }
+}
+
+function renderSavedCVsList(cvs) {
+    const container = document.getElementById('savedCvsList');
+    const emptyMsg  = document.getElementById('emptySavedMsg');
+
+    // Supprimer les anciennes cartes
+    container.querySelectorAll('.cv-card-item').forEach(el => el.remove());
+
+    if (!cvs || cvs.length === 0) {
+        emptyMsg.style.display = '';
+        return;
+    }
+    emptyMsg.style.display = 'none';
+
+    cvs.forEach(cv => {
+        const themeBadgeClass = {
+            default: 'theme-badge-default',
+            modern:  'theme-badge-modern',
+            simple:  'theme-badge-simple'
+        }[cv.theme] || 'theme-badge-default';
+
+        const themeLabel = { default: 'Défaut', modern: 'Moderne', simple: 'Simple' }[cv.theme] || cv.theme;
+
+        const card = document.createElement('div');
+        card.classList.add('cv-card-item', 'mb-3');
+        card.innerHTML = `
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <div class="cv-card-name">${escapeHtml(cv.name) || 'Sans nom'}</div>
+                <div class="cv-card-title">${escapeHtml(cv.title) || ''}</div>
+                <div class="cv-card-meta">
+                    <span class="theme-badge ${themeBadgeClass}">${themeLabel}</span>
+                    &nbsp; ${cv.saved_at}
+                </div>
+            </div>
+            <div class="d-flex flex-column gap-1 ms-2">
+                <button class="btn btn-sm btn-outline-success btn-load-cv" data-id="${escapeHtml(cv.id)}">
+                    <i class="bi bi-upload"></i> Charger
+                </button>
+                <button class="btn btn-sm btn-outline-danger btn-delete-cv" data-id="${escapeHtml(cv.id)}">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </div>
+        </div>`;
+        container.appendChild(card);
+
+        card.querySelector('.btn-load-cv').addEventListener('click', () => loadCV(cv.id));
+        card.querySelector('.btn-delete-cv').addEventListener('click', () => deleteCV(cv.id, card));
+    });
+}
+
+async function deleteCV(id, cardEl) {
+    if (!confirm('Supprimer ce CV sauvegardé ?')) return;
+    try {
+        const res = await fetch(`cv_storage.php?action=delete&id=${encodeURIComponent(id)}`);
+        const result = await res.json();
+        if (result.success) {
+            cardEl.remove();
+            showToast('CV supprimé.', 'success');
+            // Afficher le message vide si plus rien
+            const remaining = document.querySelectorAll('#savedCvsList .cv-card-item');
+            if (remaining.length === 0) document.getElementById('emptySavedMsg').style.display = '';
+        }
+    } catch (e) {
+        showToast('Erreur lors de la suppression.', 'danger');
+    }
+}
+//  UTILITAIRES
+
+
+function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
+function showToast(msg, type = 'success') {
+    const toastEl = document.getElementById('saveToast');
+    document.getElementById('toastMsg').textContent = msg;
+    toastEl.className = `toast align-items-center text-bg-${type} border-0`;
+    const toast = new bootstrap.Toast(toastEl, { delay: 3000 });
+    toast.show();
+}
+
+//  INITIALISATION
+
+// Charger la liste des CVs sauvegardés au chargement
+document.getElementById('savedCvsOffcanvas').addEventListener('show.bs.offcanvas', loadSavedCVsList);

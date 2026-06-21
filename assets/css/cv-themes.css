@@ -1,0 +1,267 @@
+/*   CV Preview — Style de base*/
+
+.cv-preview {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: white;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.13);
+    min-height: 640px;
+}
+
+/* --- Header --- */
+.cv-header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.75rem 2rem;
+    gap: 1rem;
+}
+
+.cv-header-text { flex: 1; min-width: 0; }
+
+.cv-fullname {
+    font-size: 1.85rem;
+    font-weight: 800;
+    margin: 0 0 0.2rem;
+    line-height: 1.1;
+    letter-spacing: -0.5px;
+}
+
+.cv-jobtitle {
+    font-size: 0.95rem;
+    margin: 0 0 0.8rem;
+    font-weight: 400;
+}
+
+.cv-contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1rem;
+    font-size: 0.78rem;
+}
+
+.cv-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* --- AVATAR --- */
+.cv-header-avatar { flex-shrink: 0; }
+
+.cv-avatar-circle {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 3px solid rgba(255, 255, 255, 0.65);
+    background: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cv-avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- Body --- */
+.cv-body { padding: 1.2rem 1.75rem 1.5rem; }
+
+.cv-section { margin-bottom: 0.6rem; }
+
+.cv-section-title {
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    margin-bottom: 0.55rem;
+}
+
+.cv-divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 0.7rem 0;
+}
+
+/* --- conetenue --- */
+.cv-entry { margin-bottom: 0.7rem; }
+
+.cv-entry-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.cv-entry-row strong {
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.cv-date-badge {
+    font-size: 0.72rem;
+    padding: 0.15rem 0.65rem;
+    border-radius: 20px;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cv-entry-sub {
+    font-size: 0.78rem;
+    color: #6c757d;
+    margin: 0.1rem 0 0.15rem;
+}
+
+.cv-sub-sep { margin: 0 0.3rem; opacity: 0.5; }
+
+.cv-text {
+    font-size: 0.8rem;
+    color: #444;
+    line-height: 1.5;
+    margin: 0.2rem 0 0;
+}
+
+/* --- contenue 2 --- */
+.cv-skill-pill,
+.cv-interet-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.78rem;
+}
+
+.cv-pill-sep { opacity: 0.35; font-size: 0.7rem; }
+
+/* Thème par default*/
+
+.theme-default .cv-header {
+    background-color: #198754;
+    color: white;
+}
+.theme-default .cv-jobtitle { color: rgba(255, 255, 255, 0.82); }
+.theme-default .cv-avatar-circle { border-color: rgba(255, 255, 255, 0.65); }
+.theme-default .cv-section-title { color: #198754; }
+.theme-default .cv-divider { border-color: #d1e7dd; }
+.theme-default .cv-date-badge { background: #d1e7dd; color: #0a3622; }
+.theme-default .cv-skill-pill { background: #198754; color: white; }
+.theme-default .cv-interet-pill {
+    background: #d1e7dd;
+    color: #198754;
+    border: 1px solid #a3cfbb;
+}
+
+/* Thème moderne */
+
+.theme-modern .cv-header {
+    background: linear-gradient(135deg, #7c3aed 0%, #4361ee 100%);
+    color: white;
+}
+.theme-modern .cv-jobtitle { color: rgba(255, 255, 255, 0.82); }
+.theme-modern .cv-avatar-circle { border-color: rgba(255, 255, 255, 0.65); }
+.theme-modern .cv-section-title { color: #6f42c1; }
+.theme-modern .cv-divider { border-color: #e5e7eb; }
+.theme-modern .cv-date-badge { background: #ede9fe; color: #5b21b6; }
+.theme-modern .cv-skill-pill { background: #6f42c1; color: white; }
+.theme-modern .cv-interet-pill {
+    background: #ede9fe;
+    color: #6f42c1;
+    border: 1px solid #c4b5fd;
+}
+
+/* Thème simple*/
+
+.theme-simple .cv-header {
+    background: white;
+    color: #111;
+    border-bottom: 2px solid #111;
+}
+.theme-simple .cv-jobtitle { color: #555; }
+.theme-simple .cv-avatar-circle {
+    border-color: #111;
+    border-width: 2px;
+    background: #f8f9fa;
+}
+.theme-simple .cv-section-title {
+    color: #111;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 0.25rem;
+    font-weight: 700;
+}
+.theme-simple .cv-divider { border-color: #f0f0f0; }
+.theme-simple .cv-date-badge {
+    background: transparent;
+    color: #555;
+    border: 1px solid #bbb;
+}
+.theme-simple .cv-skill-pill {
+    background: transparent;
+    color: #111;
+    border: 1px solid #111;
+}
+.theme-simple .cv-interet-pill {
+    background: transparent;
+    color: #555;
+    border: 1px solid #ccc;
+}
+.theme-simple .cv-entry-sub { color: #555; }
+.theme-simple .cv-text { color: #333; }
+
+/* Séléctions des thèmes - boutons */
+
+.theme-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.9rem;
+    border: 2px solid #dee2e6;
+    border-radius: 20px;
+    background: white;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.theme-btn:hover { border-color: #aaa; background: #f8f9fa; }
+.theme-btn.active { border-color: #198754; color: #198754; background: #f0fdf4; font-weight: 600; }
+.theme-btn.active[data-theme="modern"] { border-color: #6f42c1; color: #6f42c1; background: #faf5ff; }
+.theme-btn.active[data-theme="simple"] { border-color: #111; color: #111; background: #f8f9fa; }
+
+.theme-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Enregistrement des CV */
+
+.cv-card-item {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: border-color 0.15s, box-shadow 0.15s;
+}
+.cv-card-item:hover { border-color: #198754; box-shadow: 0 2px 8px rgba(25,135,84,0.1); }
+
+.cv-card-name { font-weight: 600; font-size: 0.9rem; }
+.cv-card-title { font-size: 0.78rem; color: #6c757d; }
+.cv-card-meta { font-size: 0.72rem; color: #9ca3af; margin-top: 0.3rem; }
+
+.theme-badge {
+    font-size: 0.65rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+}
+.theme-badge-default { background: #d1e7dd; color: #198754; }
+.theme-badge-modern { background: #ede9fe; color: #6f42c1; }
+.theme-badge-simple { background: #f3f4f6; color: #374151; border: 1px solid #d1d5db; }
