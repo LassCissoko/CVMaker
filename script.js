@@ -445,10 +445,19 @@ function updateAllLangue() {
 
 //  Export PDF
 
-function exportPDF() {
-    document.querySelector('#cv_content_input').value = cvPreview.outerHTML;
-    document.querySelector('#cv_theme_input').value   = currentTheme;
-    document.querySelector('#pdfForm').submit();
+async function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const canvas = await html2canvas(cvPreview, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+    });
+    const imgData = canvas.toDataURL('image/png');
+    const pdf = new jsPDF('p', 'mm', 'a4');
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    pdf.save('CV.pdf');
 }
 
 //  Sauvegarde du CV
@@ -515,39 +524,29 @@ function getCVData() {
     return data;
 }
 
-async function saveCV() {
+function saveCV() {
     const data = getCVData();
-    try {
-        const res = await fetch('cv_storage.php?action=save', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-        });
-        const result = await res.json();
-        if (result.success) {
-            showToast('CV sauvegardé avec succès !', 'success');
-            loadSavedCVsList();
-        } else {
-            showToast('Erreur lors de la sauvegarde.', 'danger');
-        }
-    } catch (e) {
-        showToast('Erreur réseau.', 'danger');
-    }
+    data.id = Date.now().toString();
+    data.name = `${data.firstName} ${data.lastName}`.trim() || 'Sans nom';
+    data.saved_at = new Date().toLocaleDateString('fr-FR');
+
+    const saved = JSON.parse(localStorage.getItem('savedCVs') || '[]');
+    saved.push(data);
+    localStorage.setItem('savedCVs', JSON.stringify(saved));
+    showToast('CV sauvegardé avec succès !', 'success');
+    loadSavedCVsList();
 }
 
 
 // Chargement d'un CV enregistré
 
-async function loadCV(id) {
-    try {
-        const res = await fetch(`cv_storage.php?action=get&id=${encodeURIComponent(id)}`);
-        const data = await res.json();
+function loadCV(id) {
+    const saved = JSON.parse(localStorage.getItem('savedCVs') || '[]');
+    const data = saved.find(cv => cv.id === id);
+    if (data) {
         restoreCVData(data);
-        // Ferme l'offcanvas
         bootstrap.Offcanvas.getInstance(document.getElementById('savedCvsOffcanvas'))?.hide();
         showToast('CV chargé !', 'success');
-    } catch (e) {
-        showToast('Impossible de charger ce CV.', 'danger');
     }
 }
 
@@ -697,14 +696,9 @@ function fillLangueBlock(block, d) {
 
 //  LISTE DES CV SAUVEGARDÉS
 
-async function loadSavedCVsList() {
-    try {
-        const res  = await fetch('cv_storage.php?action=list');
-        const cvs  = await res.json();
-        renderSavedCVsList(cvs);
-    } catch (e) {
-        // fail silently
-    }
+function loadSavedCVsList() {
+    const saved = JSON.parse(localStorage.getItem('savedCVs') || '[]');
+    renderSavedCVsList(saved);
 }
 
 function renderSavedCVsList(cvs) {
@@ -757,21 +751,15 @@ function renderSavedCVsList(cvs) {
     });
 }
 
-async function deleteCV(id, cardEl) {
+function deleteCV(id, cardEl) {
     if (!confirm('Supprimer ce CV sauvegardé ?')) return;
-    try {
-        const res = await fetch(`cv_storage.php?action=delete&id=${encodeURIComponent(id)}`);
-        const result = await res.json();
-        if (result.success) {
-            cardEl.remove();
-            showToast('CV supprimé.', 'success');
-            // Afficher le message vide si plus rien
-            const remaining = document.querySelectorAll('#savedCvsList .cv-card-item');
-            if (remaining.length === 0) document.getElementById('emptySavedMsg').style.display = '';
-        }
-    } catch (e) {
-        showToast('Erreur lors de la suppression.', 'danger');
-    }
+    let saved = JSON.parse(localStorage.getItem('savedCVs') || '[]');
+    saved = saved.filter(cv => cv.id !== id);
+    localStorage.setItem('savedCVs', JSON.stringify(saved));
+    cardEl.remove();
+    showToast('CV supprimé.', 'success');
+    const remaining = document.querySelectorAll('#savedCvsList .cv-card-item');
+    if (remaining.length === 0) document.getElementById('emptySavedMsg').style.display = '';
 }
 //  UTILITAIRES
 
